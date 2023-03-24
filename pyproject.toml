@@ -1,0 +1,28 @@
+[project]
+authors = [
+  {name = "Daniel Sloat", email = "daniel.sloat@arb.ca.gov"},
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "lxml",
+]
+description = "Extract comments from DOCX."
+license = {file = "LICENSE"}
+name = "docx-comments"
+readme = "README.md"
+requires-python = ">=3.11"
+version = "2023.03.24"
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "ipykernel",
+]
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=62.0.0", "wheel"]
