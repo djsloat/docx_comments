@@ -2,20 +2,23 @@
 
 from functools import cache
 from reprlib import Repr
+from typing import TYPE_CHECKING
 
 from lxml.etree import _Element
 
-from docx_comments.comments.comments import Comments
 from docx_comments.elements.bubble import Bubble
 from docx_comments.elements.paragraph import CommentParagraph
 from docx_comments.elements.paragraph_group import ParagraphGroup
 from docx_comments.ooxml_ns import ns
 
+if TYPE_CHECKING:
+    from docx_comments.comments.comments import Comments
+
 
 class Comment(ParagraphGroup):
     """Representation of comment."""
 
-    def __init__(self, /, _id: str | int, comments: Comments, **attrs):
+    def __init__(self, /, _id: str | int, comments: "Comments", **attrs):
         self._id = _id
         self._parent = comments
         self._attrs = attrs
