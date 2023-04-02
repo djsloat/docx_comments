@@ -1,12 +1,12 @@
 from collections import ChainMap
-from functools import cache, cached_property
+from functools import cached_property
 
 from docx_comments.elements.prop_decode import PropDecode
 from docx_comments.elements.run import Run
 from docx_comments.ooxml_ns import ns
 
 
-@cache
+# @cache
 class Properties:
     def __init__(self, run: Run):
         self._parent = run

@@ -21,7 +21,7 @@ class Run(DOCXElement):
         self.text: str = self.element.xpath("string(w:t)", **ns)
         self._props: AttribDict = get_attrib(self.element.xpath("w:rPr/*", **ns))
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
     @property
