@@ -1,8 +1,11 @@
 """Comments combined"""
 
+from lxml.etree import _Element
+
 from docx_comments.comments.comment import Comment
-from docx_comments.ooxml_ns import ns
+from docx_comments.docx import Document
 from docx_comments.logger import log_comments
+from docx_comments.ooxml_ns import ns
 
 
 @log_comments
@@ -10,12 +13,14 @@ class Comments:
     """Comments contained within document. Only top-level comments are included.
     Replies of comments are not."""
 
-    def __init__(self, document):
+    def __init__(self, document: Document):
         self._doc = document
-        self._document_root = self._doc.xml["word/document.xml"]
-        self._comment_metadata_root = self._doc.xml.get("word/comments.xml")
-        self._comment_ext_root = self._doc.xml.get("word/commentsExtended.xml")
-        self.comment_ids = self._document_root.xpath(
+        self._document_root: _Element = self._doc.xml["word/document.xml"]
+        self._comment_metadata_root: _Element = self._doc.xml.get("word/comments.xml")
+        self._comment_ext_root: _Element = self._doc.xml.get(
+            "word/commentsExtended.xml"
+        )
+        self.comment_ids: list = self._document_root.xpath(
             "./w:body//w:commentRangeStart/@w:id",
             **ns,
         )
