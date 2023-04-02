@@ -1,12 +1,12 @@
 from reprlib import Repr
 
-from docx_comments.elements.paragraph import Paragraph
+from lxml.etree import _Element
 
 limit_repr_text = Repr()
 
 
 class ParagraphGroup:
-    def __init__(self, paragraphs: list[Paragraph]):
+    def __init__(self, paragraphs: list[_Element]):
         self.paragraphs = paragraphs
 
     def __repr__(self):

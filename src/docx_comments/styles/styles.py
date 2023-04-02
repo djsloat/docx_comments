@@ -18,7 +18,8 @@
     on until the 'base style'.
 """
 
-from docx_comments.elements.attrib import get_attrib
+from docx_comments.docx import Document
+from docx_comments.elements.attrib import AttribDict, get_attrib
 from docx_comments.ooxml_ns import ns
 from docx_comments.styles.style import Style
 
@@ -26,7 +27,7 @@ from docx_comments.styles.style import Style
 class Styles:
     """Represents styles data in OOXML document."""
 
-    def __init__(self, document):
+    def __init__(self, document: Document):
         self._doc = document
         self._style_xml = self._doc.xml["word/styles.xml"]
         self.style_ids = self._style_xml.xpath("w:style/@w:styleId", **ns)
@@ -45,11 +46,11 @@ class Styles:
         return len(self.styles)
 
     @property
-    def doc_default_props_para(self):
+    def doc_default_props_para(self) -> AttribDict:
         xpath = "w:docDefaults/w:pPrDefault/w:pPr/*"
         return get_attrib(self._style_xml.xpath(xpath, **ns))
 
     @property
-    def doc_default_props_run(self):
+    def doc_default_props_run(self) -> AttribDict:
         xpath = "w:docDefaults/w:rPrDefault/w:rPr/*"
         return get_attrib(self._style_xml.xpath(xpath, **ns))

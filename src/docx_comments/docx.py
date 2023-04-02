@@ -5,6 +5,7 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from lxml import etree
+from lxml.etree import _Element
 
 from docx_comments.comments.comments import Comments
 from docx_comments.notes.notes import Notes
@@ -26,7 +27,7 @@ class Document:
         return f"Document(file='{self.file}')"
 
     @cached_property
-    def xml(self):
+    def xml(self) -> dict[str, _Element]:
         with ZipFile(self.file, "r") as z:
             return {
                 filename: etree.fromstring(z.read(filename))
