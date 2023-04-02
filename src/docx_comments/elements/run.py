@@ -1,5 +1,6 @@
 """Module for the run <w:r> element."""
-from functools import cache
+
+# from functools import cache
 
 from lxml.etree import _Element
 
@@ -10,7 +11,7 @@ from docx_comments.elements.properties import Properties
 from docx_comments.ooxml_ns import ns
 
 
-@cache
+# @cache
 class Run(DOCXElement):
     """Representation of run <w:r> element."""
 
