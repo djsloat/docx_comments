@@ -1,7 +1,7 @@
 """Module for basic DOCX element."""
 from reprlib import Repr
 
-from lxml.etree import QName
+from lxml.etree import _Element, QName
 
 limit = Repr()
 
@@ -9,7 +9,7 @@ limit = Repr()
 class DOCXElement:
     """Basic representation of DOCX Element."""
 
-    def __init__(self, element):
+    def __init__(self, element: _Element):
         self.element = element
 
     def __repr__(self):

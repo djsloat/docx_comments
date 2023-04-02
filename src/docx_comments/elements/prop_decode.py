@@ -1,88 +1,90 @@
 import re
 
+from docx_comments.elements.attrib import AttribDict
+
 
 class PropDecode:
     """Decodes OOXML format properties."""
 
-    def __init__(self, props):
+    def __init__(self, props: AttribDict):
         self._props = props
 
-    def _toggled(self, prop):
+    def _toggled(self, prop: str) -> bool:
         # b, i, strike, dstrike (among others) are 'toggled'
         try:
-            toggle1 = not self._props[prop]  # {"b": {}}
-            toggle2 = self._props[prop].get("val", "") in ("1", "on", "true")
+            toggle1 = not self._props.get(prop)  # {"b": {}}
+            toggle2 = self._props.get(prop, {}).get("val", "") in ("1", "on", "true")
         except KeyError:
             return False
         else:
             return toggle1 or toggle2
 
     @property
-    def bold(self):
+    def bold(self) -> bool:
         return self._toggled("b")
 
     @property
-    def italic(self):
+    def italic(self) -> bool:
         return self._toggled("i")
 
     @property
-    def underline(self):
+    def underline(self) -> bool:
         return "u" in self._props and not re.search(
             "[D|d]ouble|^none$", self._props.get("u", {}).get("val", "")
         )
 
     @property
-    def strike(self):
+    def strike(self) -> bool:
         return self._toggled("strike")
 
     @property
-    def d_underline(self):
+    def d_underline(self) -> bool:
         return re.search("[D|d]ouble", self._props.get("u", {}).get("val", ""))
 
     @property
-    def d_strike(self):
+    def d_strike(self) -> bool:
         return self._toggled("dstrike")
 
     @property
-    def subscript(self):
+    def subscript(self) -> bool:
         return self._props.get("vertAlign", {}).get("val", "") == "subscript"
 
     @property
-    def superscript(self):
+    def superscript(self) -> bool:
         return self._props.get("vertAlign", {}).get("val", "") == "superscript"
 
     @property
-    def caps(self):
+    def caps(self) -> bool:
         return self._toggled("caps")
 
     @property
-    def color(self):
+    def color(self) -> bool:
         return self._props.get("color", {}).get("val", "")
 
     @property
-    def emboss(self):
+    def emboss(self) -> bool:
         return self._toggled("emboss")
 
     @property
-    def imprint(self):
+    def imprint(self) -> bool:
         return self._toggled("imprint")
 
     @property
-    def outline(self):
+    def outline(self) -> bool:
         return self._toggled("outline")
 
     @property
-    def shadow(self):
+    def shadow(self) -> bool:
         return self._toggled("shadow")
 
     @property
-    def smallcaps(self):
+    def smallcaps(self) -> bool:
         return self._toggled("smallCaps")
 
     @property
-    def size(self):
+    def size(self) -> bool:
         return self._props.get("sz", {}).get("val", "")
 
     @property
-    def vanish(self):
+    def vanish(self) -> bool:
         return self._toggled("vanish")

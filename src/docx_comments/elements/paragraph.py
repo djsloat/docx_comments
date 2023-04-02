@@ -1,7 +1,13 @@
 """Paragraph object"""
-from lxml import etree
 
-from docx_comments.elements.attrib import get_attrib
+from collections import ChainMap
+
+from lxml import etree
+from lxml.etree import _Element
+from docx_comments.comments.comment import Comment
+
+from docx_comments.docx import Document
+from docx_comments.elements.attrib import AttribDict, get_attrib
 from docx_comments.elements.element_base import DOCXElement
 from docx_comments.elements.run import Run
 from docx_comments.ooxml_ns import ns
@@ -10,7 +16,7 @@ from docx_comments.ooxml_ns import ns
 class Paragraph(DOCXElement):
     """Representation of <w:p> (paragraph) element."""
 
-    def __init__(self, element, document):
+    def __init__(self, element: _Element, document: Document):
         super().__init__(element)
         self._doc = document
         self.runs = [Run(run, self) for run in self.element.xpath("w:r", **ns)]
@@ -27,32 +33,34 @@ class Paragraph(DOCXElement):
     def __str__(self):
         return self.text
 
-    def insert_run(self, position, element):
+    def insert_run(self, position: int, element: _Element):
         self.runs.insert(position, Run(element, self._doc))
 
     @property
-    def text(self):
+    def text(self) -> str:
         return "".join(run.text for run in self.runs)
 
     @property
-    def props(self):
+    def props(self) -> AttribDict:
         return get_attrib(self.element.xpath("w:pPr/*", **ns))
 
     @property
-    def glyph_props(self):
+    def glyph_props(self) -> AttribDict:
         return get_attrib(self.element.xpath("w:pPr/w:rPr/*", **ns))
 
     @property
-    def style(self):
+    def style(self) -> str:
         return self.element.xpath("string(w:pPr/w:pStyle/@w:val)", **ns)
 
     @property
-    def style_props(self):
+    def style_props(self) -> ChainMap:
         return self._doc.styles[self.style].paragraph
 
 
 class CommentParagraph(Paragraph):
-    def __init__(self, element, document, comment):
+    """Comment paragraph."""
+
+    def __init__(self, element: _Element, document: Document, comment: Comment):
         super().__init__(element, document)
         self._comment = comment
         self.runs = self.get_comment_runs()

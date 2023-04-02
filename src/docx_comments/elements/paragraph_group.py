@@ -1,10 +1,12 @@
 from reprlib import Repr
 
+from docx_comments.elements.paragraph import Paragraph
+
 limit_repr_text = Repr()
 
 
 class ParagraphGroup:
-    def __init__(self, paragraphs):
+    def __init__(self, paragraphs: list[Paragraph]):
         self.paragraphs = paragraphs
 
     def __repr__(self):
@@ -26,5 +28,5 @@ class ParagraphGroup:
         return bool(self.paragraphs)
 
     @property
-    def text(self):
+    def text(self) -> str:
         return "\n".join(para.text for para in self.paragraphs)
