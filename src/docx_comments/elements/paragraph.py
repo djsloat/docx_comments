@@ -1,16 +1,19 @@
 """Paragraph object"""
 
 from collections import ChainMap
+from typing import TYPE_CHECKING
 
 from lxml import etree
 from lxml.etree import _Element
-from docx_comments.comments.comment import Comment
 
 from docx_comments.docx import Document
 from docx_comments.elements.attrib import AttribDict, get_attrib
 from docx_comments.elements.element_base import DOCXElement
 from docx_comments.elements.run import Run
 from docx_comments.ooxml_ns import ns
+
+if TYPE_CHECKING:
+    from docx_comments.comments.comment import Comment
 
 
 class Paragraph(DOCXElement):
@@ -60,7 +63,7 @@ class Paragraph(DOCXElement):
 class CommentParagraph(Paragraph):
     """Comment paragraph."""
 
-    def __init__(self, element: _Element, document: Document, comment: Comment):
+    def __init__(self, element: _Element, document: Document, comment: "Comment"):
         super().__init__(element, document)
         self._comment = comment
         self.runs = self.get_comment_runs()
