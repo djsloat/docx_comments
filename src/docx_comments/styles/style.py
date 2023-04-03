@@ -1,17 +1,20 @@
 from collections import ChainMap
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from lxml.etree import _Element
 
 from docx_comments.elements.attrib import AttribDict, get_attrib
 from docx_comments.ooxml_ns import ns
-from docx_comments.styles.styles import Styles
+
+if TYPE_CHECKING:
+    from docx_comments.styles.styles import Styles
 
 
 class Style:
     """Representation of <w:style> OOXML document element."""
 
-    def __init__(self, _id: str, styles: Styles):
+    def __init__(self, _id: str, styles: "Styles"):
         self._id = _id
         self._parent = styles
         self.element: _Element = self._parent._style_xml.xpath(

@@ -2,20 +2,24 @@
 
 # from functools import cache
 
+from typing import TYPE_CHECKING
+
 from lxml.etree import _Element
 
 from docx_comments.elements.attrib import AttribDict, get_attrib
 from docx_comments.elements.element_base import DOCXElement
-from docx_comments.elements.paragraph import Paragraph
 from docx_comments.elements.properties import Properties
 from docx_comments.ooxml_ns import ns
+
+if TYPE_CHECKING:
+    from docx_comments.elements.paragraph import Paragraph
 
 
 # @cache
 class Run(DOCXElement):
     """Representation of run <w:r> element."""
 
-    def __init__(self, element: _Element, paragraph: Paragraph):
+    def __init__(self, element: _Element, paragraph: "Paragraph"):
         super().__init__(element)
         self._parent = paragraph
         self.text: str = self.element.xpath("string(w:t)", **ns)

@@ -81,7 +81,7 @@ class Comment(ParagraphGroup):
             )
 
     @property
-    def reply(self) -> "Comment" | None:
+    def reply(self) -> "Comment" or None:
         if (
             self._parent._comment_metadata_root is not None
             and self._parent._comment_ext_root is not None

@@ -1,9 +1,13 @@
 """Comments combined"""
 
+from typing import TYPE_CHECKING
+
 from docx_comments.comments.comment import Comment
-from docx_comments.docx import Document
 from docx_comments.logger import log_comments
 from docx_comments.ooxml_ns import ns
+
+if TYPE_CHECKING:
+    from docx_comments.docx import Document
 
 
 @log_comments
@@ -11,7 +15,7 @@ class Comments:
     """Comments contained within document. Only top-level comments are included.
     Replies of comments are not."""
 
-    def __init__(self, document: Document):
+    def __init__(self, document: "Document"):
         self._doc = document
         self._document_root = self._doc.xml["word/document.xml"]
         self._comment_metadata_root = self._doc.xml.get("word/comments.xml")

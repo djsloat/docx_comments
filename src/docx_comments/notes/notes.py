@@ -1,14 +1,16 @@
+from typing import TYPE_CHECKING
 from lxml.etree import Element
-from docx_comments.docx import Document
 
 from docx_comments.notes.note import EndNote, FootNote
 from docx_comments.ooxml_ns import ns
 
+if TYPE_CHECKING:
+    from docx_comments.docx import Document
 
 class Notes:
     """Representation of footnotes and endnotes in OOXML."""
 
-    def __init__(self, document: Document):
+    def __init__(self, document: "Document"):
         self._doc = document
         self._footnotes_xml = self._doc.xml.get("word/footnotes.xml", Element("root"))
         self._endnotes_xml = self._doc.xml.get("word/endnotes.xml", Element("root"))

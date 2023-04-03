@@ -1,14 +1,17 @@
 from collections import ChainMap
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from docx_comments.elements.prop_decode import PropDecode
-from docx_comments.elements.run import Run
 from docx_comments.ooxml_ns import ns
+
+if TYPE_CHECKING:
+    from docx_comments.elements.run import Run
 
 
 # @cache
 class Properties:
-    def __init__(self, run: Run):
+    def __init__(self, run: "Run"):
         self._parent = run
         self._element = run.element
         self._styles = self._parent._parent._doc.styles.styles
