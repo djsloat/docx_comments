@@ -22,7 +22,9 @@ class Paragraph(DOCXElement):
     def __init__(self, element: _Element, document: "Document"):
         super().__init__(element)
         self._doc = document
-        self.runs = [Run(run, self) for run in self.element.xpath("w:r", **ns)]
+        self.runs: list[Run] = [
+            Run(run, self) for run in self.element.xpath("w:r", **ns)
+        ]
 
     def __getitem__(self, key):
         return self.runs[key]
