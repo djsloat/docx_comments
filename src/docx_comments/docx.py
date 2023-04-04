@@ -10,10 +10,9 @@ from lxml.etree import _Element
 from docx_comments.comments.comments import Comments
 from docx_comments.notes.notes import Notes
 from docx_comments.styles.styles import Styles
-from docx_comments.logger import log_filename
+# from docx_comments.logger import log_filename
 
 
-@log_filename
 class Document:
     """Opens docx document and creates XML file tree"""
 
