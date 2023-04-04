@@ -25,7 +25,7 @@ class FootNote(Note):
         self.element: _Element = self._parent._footnotes_xml.xpath(
             "w:footnote[@w:id=$_id]", _id=self._id, **ns
         )[0]
-        self.paragraphs = [
+        self.paragraphs: list[Paragraph] = [
             Paragraph(para, self._parent._doc)
             for para in self.element.xpath("w:p", **ns)
         ]
@@ -37,7 +37,7 @@ class EndNote(Note):
         self.element: _Element = self._parent._endnotes_xml.xpath(
             "w:endnote[@w:id=$_id]", _id=self._id, **ns
         )[0]
-        self.paragraphs = [
+        self.paragraphs: list[Paragraph] = [
             Paragraph(para, self._parent._doc)
             for para in self.element.xpath("w:p", **ns)
         ]
