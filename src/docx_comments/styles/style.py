@@ -1,29 +1,18 @@
 from collections import ChainMap
 from functools import cached_property
-from typing import TYPE_CHECKING
 
 from lxml.etree import _Element
 
 from docx_comments.elements.attrib import AttribDict, get_attrib
 from docx_comments.ooxml_ns import ns
 
-if TYPE_CHECKING:
-    from docx_comments.styles.styles import Styles
-
 
 class Style:
     """Representation of <w:style> OOXML document element."""
 
-    def __init__(self, _id: str, styles: "Styles"):
-        self._id = _id
-        self._parent = styles
-        self.element: _Element = self._parent._style_xml.xpath(
-            "w:style[@w:styleId=$_id]", _id=self._id, **ns
-        )[0]
+    def __init__(self, element: _Element):
+        self.element = element
         self.basedon: str = self.element.xpath("string(w:basedOn/@w:val)", **ns)
-
-    def __repr__(self):
-        return f"Style(_id='{self._id}',type='{self._type}')"
 
     @property
     def _name(self) -> str:
@@ -44,9 +33,10 @@ class Style:
     def _style_inheritance(self) -> list[str]:
         based_on_list = []
         based_on = self.basedon
+        xpath = "string(parent::w:style[w:name/@w:val = $_basedon]/w:basedOn/@w:val)"
         while based_on:
             based_on_list.append(based_on)
-            following_style = self._parent[based_on].basedon
+            following_style = self.element.xpath(xpath, _basedon=based_on, **ns)
             based_on = following_style
         return based_on_list
 
