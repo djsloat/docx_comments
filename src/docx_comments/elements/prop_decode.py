@@ -12,11 +12,12 @@ class PropDecode:
     def _toggled(self, prop: str) -> bool:
         # b, i, strike, dstrike (among others) are 'toggled'
         try:
-            toggle1 = not self._props.get(prop)  # {"b": {}}
-            toggle2 = self._props.get(prop, {}).get("val", "") in ("1", "on", "true")
+            toggle_data = self._props[prop]
         except KeyError:
             return False
         else:
+            toggle1 = not toggle_data  # {"b": {}}
+            toggle2 = toggle_data.get("val", "") in ("1", "on", "true")
             return toggle1 or toggle2
 
     @property
